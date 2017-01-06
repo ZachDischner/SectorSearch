@@ -1,4 +1,4 @@
-# Drone Airspace Coding Challenge
+# XXXXXXXXXXXXXX Coding Challenge
 
 # Given a square airspace, 128km x 128km, and N=10,000 drones occupying the airspace
 # our challenge is to efficiently compute how many drones are flying too close to one 
