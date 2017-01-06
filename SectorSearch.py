@@ -62,6 +62,7 @@ Algorithm Qualities:
 Testing:
     In basic testing here, Sector Search begins to overtake the brute force approach when searching through as few as 100 drones, and by a few thousand, it blows the brute force method away!
 """
+from __future__ import print_function
 import random
 import numpy as np
 from copy import copy
@@ -122,7 +123,7 @@ def split_into_sectors(airspace_size=AIRSPACE_SIZE, conflict_radius=CONFLICT_RAD
     """
     ###### Create Fields
     ## Get indices of grid as if overlayed on AIRSPACE_SIZE square space
-    boundaries = range(airspace_size)[::conflict_radius*pad_mult]
+    boundaries = list(range(airspace_size)[::conflict_radius*pad_mult])
     boundaries.append(airspace_size) # So we don't lose any stragglers
     
     ## Form dictionary to store associated drones in
@@ -190,7 +191,7 @@ def get_conflicts(drones, conflict_rad=CONFLICT_RADIUS, debug=False):
             ## Calculate distance, flag both drones as conflicted ones 
             distance = dist(droneA['coords'],droneB['coords'])
             if distance < conflict_rad:
-                if debug: print "Conflict! DroneA {} and DroneB {} are {}m apart! ".format(droneA['drone_id'], droneB['drone_id'], distance)
+                if debug: print("Conflict! DroneA {} and DroneB {} are {}m apart! ".format(droneA['drone_id'], droneB['drone_id'], distance))
                 conflicts.append(droneA['drone_id'])
                 conflicts.append(droneB['drone_id'])
 
@@ -238,22 +239,22 @@ def count_conflicts(drones, conflict_radius,debug=False,limit=-1):
         for sector_loc in [(x,y) for x in xs for y in ys]:
             sectors[sector_loc].append(drone)
         
-    if debug: print "Preprocessing and forming all data structures took {:3.5f} seconds".format(time.time()-start_pre)
+    if debug: print("Preprocessing and forming all data structures took {:3.5f} seconds".format(time.time()-start_pre))
     
     ## Examine each sector for conflicts
     conflicts = []
     start_sector = time.time()
-    for index, sector_drones in sectors.iteritems():
+    for index, sector_drones in sectors.items():
         conflicts += get_conflicts(sector_drones,conflict_rad=conflict_radius)
     
     num_conflicts = len(np.unique(conflicts))
-    if debug: print "Sector Conflict Processing {} drones took {:3.5f} seconds. Number of conflicts: {}".format(limit,time.time()-start_sector, num_conflicts)
+    if debug: print("Sector Conflict Processing {} drones took {:3.5f} seconds. Number of conflicts: {}".format(limit,time.time()-start_sector, num_conflicts))
     
     ## Handy for benchmark testing, compare against raw, unsectored search through entire space
     if limit != -1:        
         start_batch = time.time()
         batch_conflicts = get_conflicts(drones[0:limit],conflict_rad=conflict_radius)
-        if debug: print "\nBatch Processing all {} drones at once took {:3.5f} seconds. Number of conflicts: {}".format(limit, time.time()-start_batch,len(np.unique(batch_conflicts)))
+        if debug: print("\nBatch Processing all {} drones at once took {:3.5f} seconds. Number of conflicts: {}".format(limit, time.time()-start_batch,len(np.unique(batch_conflicts))))
     
     return num_conflicts
 
@@ -262,5 +263,5 @@ def gen_coord():
 
 positions = [[gen_coord(), gen_coord()] for i in range(NUM_DRONES)]
 conflicts = count_conflicts(positions, CONFLICT_RADIUS)
-print "Drones in conflict: {}".format(conflicts)
+print("Drones in conflict: {}".format(conflicts))
 

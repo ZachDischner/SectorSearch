@@ -3,6 +3,7 @@
 # Do not use any Python built-in functions like.
 # Is guarenteed to execute to completion.
 
+from __future__ import print_function
 import time
 import random
 
@@ -26,7 +27,7 @@ def timetaken(func):
         start = time.time()
         ret = func()
         end = time.time()
-        print "Run function took {:3.5f} seconds.".format(end-start)
+        print("Run function took {:3.5f} seconds.".format(end-start))
         return ret
     # return modified function for execution
     return time_me
@@ -47,10 +48,10 @@ def run():
         if current.is_complete():
             return index
 
-print 'Expected output:'
-print "Run function took # seconds."
-print 'Final object was at index #.'
+print('Expected output:')
+print("Run function took # seconds.")
+print('Final object was at index #.')
 
-print 'Actual output:'
+print('Actual output:')
 final_index = run()
-print 'Final object was at index {}'.format(final_index)
+print('Final object was at index {}'.format(final_index))
